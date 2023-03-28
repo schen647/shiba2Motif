@@ -1,4 +1,4 @@
-# splicingPatternMotifAnalysis
+# shiba2Motif
 The script for using meme to explore motif enrichment in different splicing patterns. Needed to be used in tandem with shiba
 
 # Usage:
