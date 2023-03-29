@@ -16,6 +16,7 @@ class mainEventLoop:
         self.input_three = args.input_three
         self.ref = args.ref
         self.xstremePath = args.xstremePath
+        self.isDetach = not args.no_detach
     
     def getControl(self,path):
         df = pd.read_csv(path,sep='\t')
@@ -467,14 +468,19 @@ class mainEventLoop:
             for item in resList:
                 f.write(resList[item]['sig'])
 
-            
+        detach = ''
+
+        if self.isDetach:
+            detach = ' &'
+
+
         for item in resList:
             print('now running '+item)
             print(self.xstremePath+' --p '+self.tmp+'/motifRes/'+item+'_sig.txt --n '+self.tmp+'/motifRes/'+item+'_ctr.txt --oc '+self.out+'/motifResMeme/'+item+' --rna --m '+self.ref+' --meme-p 32 --minw 4 --minw 8')
-            os.system(self.xstremePath+' --p '+self.tmp+'/motifRes/'+item+'_sig.txt --n '+self.tmp+'/motifRes/'+item+'_ctr.txt --oc '+self.out+'/motifResMeme/'+item+' --rna --m '+self.ref+' --meme-p 32 --minw 4 --minw 8 > /dev/null  &')
+            os.system(self.xstremePath+' --p '+self.tmp+'/motifRes/'+item+'_sig.txt --n '+self.tmp+'/motifRes/'+item+'_ctr.txt --oc '+self.out+'/motifResMeme/'+item+' --rna --m '+self.ref+' --meme-p 32 --minw 4 --minw 8 > /dev/null '+detach)
 
 
-        os.system(self.xstremePath+' --p  '+self.tmp+'/motifRes/total_sig.txt --n '+self.tmp+'/motifRes/total_ctr.txt --oc '+self.out+'/motifResMeme/'+item+' --rna --m '+self.ref+' --meme-p 32 --minw 4 --minw 8 > /dev/null &')
+        os.system(self.xstremePath+' --p  '+self.tmp+'/motifRes/total_sig.txt --n '+self.tmp+'/motifRes/total_ctr.txt --oc '+self.out+'/motifResMeme/'+item+' --rna --m '+self.ref+' --meme-p 32 --minw 4 --minw 8 > /dev/null '+detach)
 
 
 def parse_args():
@@ -553,6 +559,12 @@ def parse_args():
         help="path to the meme binary",
     )
 
+    parser.add_argument(
+        "--no_detach",
+        action="store_true",
+        help="Undetouched mode forces all threads to queue up one after one. The program will only exit when all threads are finished. Useful for being run in downstream case",
+    )
+
     
     return parser.parse_args()
 
@@ -584,3 +596,4 @@ if __name__ == "__main__":
     program = mainEventLoop(args)
     program.launch()  
             
+
