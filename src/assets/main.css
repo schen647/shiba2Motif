@@ -1,0 +1,72 @@
+::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #f5f5f53d;
+}
+
+::-webkit-scrollbar
+{
+	width: 0.3vh;
+	background-color: #f5f5f511;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #ffffff;
+}
+
+
+@font-face {
+    font-family: font1;
+    src: url('/fonts/1.ttf');
+}
+
+@font-face {
+    font-family: font2;
+    src: url('/fonts/2.ttf');
+}
+
+@font-face {
+    font-family: font3;
+    src: url('/fonts/3.ttf');
+}
+
+@font-face {
+    font-family: font4;
+    src: url('/fonts/4.ttf');
+}
+
+@font-face {
+    font-family: font5;
+    src: url('/fonts/5.otf');
+}
+
+@font-face {
+    font-family: font6;
+    src: url('/fonts/6.ttf');
+}
+
+@font-face {
+    font-family: font7;
+    src: url('/fonts/nagayama_kai08.otf');
+}
+
+@font-face {
+    font-family: font8;
+    src: url('/fonts/genkai-mincho.ttf');
+}
+
+@font-face {
+    font-family: font8;
+    src: url('/fonts/9.ttf');
+}
+
+@font-face {
+    font-family: font9;
+    src: url('/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: font10;
+    src: url('/fonts/ARIAL.TTF');
+}
