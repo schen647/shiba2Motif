@@ -17,6 +17,7 @@ class mainEventLoop:
         self.ref = args.ref
         self.xstremePath = args.xstremePath
         self.isDetach = not args.no_detach
+        self.rangeCheck = args.range_check
     
     def getControl(self,path):
         df = pd.read_csv(path,sep='\t')
@@ -129,8 +130,8 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon')
             try:
-            #seq = genome.fetch(ret['chr'], ret['start']-200, ret['start'])
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+            #seq = genome.fetch(ret['chr'], ret['start']-self.rangeCheck, ret['start'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
             #print(res)
                 resList['se_exon_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -143,7 +144,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['se_exon_up200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -162,8 +163,8 @@ class mainEventLoop:
             ret = self.getExonPosition(row,'exon')
             try:
                 #print('checking')
-                #print(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                #print(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['se_exon_down200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['se_exon_down200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -174,7 +175,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['se_exon_down200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -190,7 +191,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['five_exonA_down200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['five_exonA_down200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -201,7 +202,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['five_exonA_down200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -217,7 +218,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['five_exonB_down200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['five_exonB_down200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -228,7 +229,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['five_exonB_down200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -244,7 +245,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['three_exonA_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['three_exonA_up200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -255,7 +256,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['three_exonA_up200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -272,7 +273,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['three_exonB_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['three_exonB_up200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -283,7 +284,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['three_exonB_up200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -299,7 +300,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['mxe_exonA_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['mxe_exonA_up200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -310,7 +311,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['mxe_exonA_up200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -326,7 +327,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['mxe_exonA_down200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['mxe_exonA_down200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -337,7 +338,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['mxe_exonA_down200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -353,7 +354,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['mxe_exonB_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['mxe_exonB_up200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -364,7 +365,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['mxe_exonB_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -380,7 +381,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['mxe_exonB_down200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['mxe_exonB_down200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -391,7 +392,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['mxe_exonB_down200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -407,7 +408,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['ri_exonA_down200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['ri_exonA_down200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -418,7 +419,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_a')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['ri_exonA_down200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -434,7 +435,7 @@ class mainEventLoop:
         for index, row in tmpControl.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 resList['ri_exonB_up200_upRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
                 resList['ri_exonB_up200_dnRegulated']['ctr']+='>'+ret['name']+'\n'+res+'\n'
@@ -445,7 +446,7 @@ class mainEventLoop:
         for index, row in tmpSig.iterrows():
             ret = self.getExonPosition(row,'exon_b')
             try:
-                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-200,ret['strand'])
+                seq = self.getSeq(ret['chr'], ret['start'], ret['end'],-self.rangeCheck,ret['strand'])
                 res = self.getRNA(seq, ret['strand'])
                 if row['dPSI']>0:
                     resList['ri_exonB_up200_upRegulated']['sig']+='>'+ret['name']+'\n'+res+'\n'
@@ -565,6 +566,14 @@ def parse_args():
         help="Undetouched mode forces all threads to queue up one after one. The program will only exit when all threads are finished. Useful for being run in downstream case",
     )
 
+    parser.add_argument(
+        "--rangeCheck",
+        type=int,
+        required=False,
+        default=200,
+        help="range to check for motif",
+    )
+
     
     return parser.parse_args()
 
@@ -596,4 +605,3 @@ if __name__ == "__main__":
     program = mainEventLoop(args)
     program.launch()  
             
-
